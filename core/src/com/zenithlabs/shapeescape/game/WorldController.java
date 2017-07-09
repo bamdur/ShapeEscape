@@ -3,6 +3,7 @@
  */
 package com.zenithlabs.shapeescape.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,6 +19,8 @@ import com.zenithlabs.shapeescape.utils.CameraHelper;
  */
 public class WorldController implements Controller {
 
+	private static final String TAG = WorldController.class.getName();
+
 	private WorldInput worldInput;
 	
 	public CameraHelper cameraHelper;
@@ -26,6 +29,9 @@ public class WorldController implements Controller {
 	public Array<Arrow> arrows;
 	
 	public int score = 0;
+	public int coins = 0;
+	public float time = 0;
+	
 	public WorldController() {
 		init();
 	}
@@ -40,6 +46,14 @@ public class WorldController implements Controller {
 	@Override
 	public void update(float deltaTime) {
 		worldInput.update(deltaTime);
+		time += 60 * deltaTime;
+		Gdx.app.log(TAG, "" + time);
+		if (time > 60) {
+			time = 0;
+			score += 1 ;
+			coins += 1 ;
+		}
+		
 	}
 	
 	private void initTestObjects() {

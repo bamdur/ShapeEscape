@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -130,8 +131,10 @@ public class Assets implements Disposable, AssetErrorListener {
 		public AssetFonts() {
 			FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/font.ttf"));
 			FreeTypeFontParameter param = new FreeTypeFontParameter();	
-			param.minFilter = TextureFilter.Linear;
-			param.magFilter = TextureFilter.Linear;
+			//param.color = Color.BLACK;
+			//param.minFilter = TextureFilter.Linear;
+			//param.magFilter = TextureFilter.Linear;
+			param.flip = true;
 			param.size = SMALL_SIZE;
 			small = gen.generateFont(param);
 			param.size = MEDIUM_SIZE;

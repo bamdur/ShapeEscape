@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -50,18 +51,60 @@ public class WorldRenderer implements Renderer {
 	
 	@Override
 	public void render() {
+		renderWorld(batch);
+		renderGUI(batch);
+		
+	}
+	
+	private void renderWorld(SpriteBatch batch) {
 		worldController.cameraHelper.applyTo(camera);
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+		worldController.render(batch);
+		batch.end();
+
+	}
+	
+	private void renderGUI(SpriteBatch batch) {
+		batch.setProjectionMatrix(cameraGUI.combined);
+		batch.begin();
 		renderGUIScore();
-		renderTestObjects();
+		renderGUIFPSCounter(batch);
+		renderGUICoins();
 		batch.end();
 	}
 	
-	private void renderTestObjects() {
+	private void renderGUIScore() {
+		String score = "Score: ";
+		Assets.getInstance().fonts.medium.draw(batch, score + worldController.score, 5, 10);
+	}
 
-		worldController.render(batch);
+	private void renderGUIPause() {
+		
+	}
+	
+	private void renderGUICoins() {
+		String score = "Coins: ";
+		Assets.getInstance().fonts.medium.draw(batch, score + worldController.score, cameraGUI.viewportWidth - 90, 10);
 
+	}
+	
+	private void renderGUIFPSCounter(SpriteBatch batch) {
+		float x = cameraGUI.viewportWidth - 60;
+		float y = cameraGUI.viewportHeight - 20;
+		int fps = Gdx.graphics.getFramesPerSecond();
+		BitmapFont fpsFont = Assets.getInstance().fonts.medium;
+		
+		if (fps >= 45) {
+			fpsFont.setColor(Color.GREEN);
+		} else if (fps >= 30) {
+			fpsFont.setColor(Color.YELLOW);
+		} else {
+			fpsFont.setColor(Color.RED);
+		}
+		fpsFont.draw(batch, "FPS: " + fps, x, y);
+		fpsFont.setColor(Color.WHITE);
+				
 	}
 	@Override
 	public void resize(int width, int height) {
@@ -74,13 +117,6 @@ public class WorldRenderer implements Renderer {
 		cameraGUI.update();
 	}
 	
-	private void renderGUIScore() {
-		String score = "Score: ";
-		float x = -20;
-		float y = -20;
-		Assets.getInstance().fonts.medium.draw(batch, score + worldController.score, x, y);
-	}
-
 	@Override
 	public void dispose() {
 		batch.dispose();
