@@ -1,0 +1,41 @@
+
+gameObjects.png
+size: 1024,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+arrow
+  rotate: false
+  xy: 600, 286
+  size: 34, 118
+  orig: 34, 118
+  offset: 0, 0
+  index: -1
+background
+  rotate: false
+  xy: 2, 126
+  size: 596, 380
+  orig: 596, 380
+  offset: 0, 0
+  index: -1
+circle
+  rotate: false
+  xy: 204, 24
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+rectangle
+  rotate: false
+  xy: 2, 2
+  size: 200, 122
+  orig: 200, 122
+  offset: 0, 0
+  index: -1
+square
+  rotate: false
+  xy: 600, 406
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
