@@ -8,10 +8,10 @@ import com.badlogic.gdx.utils.Disposable;
 /**
  * @author Brandon Amdur
  * 
- * Interface for classes that provide rendering funcationality
+ * Interface for classes that provide rendering functionality
  *
  */
-public interface Renderer extends Disposable{
+public interface Renderer extends Disposable {
 	
 	public void render();
 	

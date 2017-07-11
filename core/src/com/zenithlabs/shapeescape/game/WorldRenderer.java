@@ -27,10 +27,13 @@ public class WorldRenderer implements Renderer {
 	
 	private WorldController worldController;
 	
+	private BoundRenderer boundRenderer;
+	
 	private static final String TAG = WorldRenderer.class.getName();
 	
 	public WorldRenderer (WorldController worldController) {
 		this.worldController = worldController;
+		boundRenderer = new BoundRenderer(worldController);
 		init();
 
 	}
@@ -53,6 +56,7 @@ public class WorldRenderer implements Renderer {
 	public void render() {
 		renderWorld(batch);
 		renderGUI(batch);
+		boundRenderer.render(camera);
 		
 	}
 	
@@ -106,6 +110,7 @@ public class WorldRenderer implements Renderer {
 		fpsFont.setColor(Color.WHITE);
 				
 	}
+	
 	@Override
 	public void resize(int width, int height) {
 		camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / height) * width;

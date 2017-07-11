@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.zenithlabs.shapeescape.objects.AbstractShape;
 import com.zenithlabs.shapeescape.objects.Arrow;
 import com.zenithlabs.shapeescape.objects.Background;
 import com.zenithlabs.shapeescape.utils.CameraHelper;
@@ -25,6 +26,9 @@ public class WorldController implements Controller {
 	
 	public CameraHelper cameraHelper;
 	
+	//array containing all active shapes 
+	public Array<AbstractShape> shapes;
+	
 	public Background background;
 	public Array<Arrow> arrows;
 	
@@ -40,6 +44,7 @@ public class WorldController implements Controller {
 	public void init () {
 		cameraHelper = new CameraHelper();
 		worldInput = new WorldInput(this, cameraHelper);
+		initContainers();
 		initTestObjects();
 	}
 	
@@ -53,17 +58,26 @@ public class WorldController implements Controller {
 			score += 1 ;
 			coins += 1 ;
 		}
-		
+		updateObjects(deltaTime);
 	}
 	
+	private void initContainers() {
+		arrows = new Array<Arrow>();
+		shapes = new Array<AbstractShape>();
+	}
 	private void initTestObjects() {
 		background = new Background();
-		arrows = new Array<Arrow>();
+		
 		arrows.addAll(new Arrow(), new Arrow(), new Arrow());
 		
-		
+		shapes.addAll(arrows);
 	}
 	
+	private void updateObjects(float deltaTime) {
+		for (Arrow arrow: arrows) {
+			arrow.update(deltaTime);
+		}
+	}
 	public void render(SpriteBatch batch) {
 		background.render(batch);
 		for (Arrow arrow: arrows) {
