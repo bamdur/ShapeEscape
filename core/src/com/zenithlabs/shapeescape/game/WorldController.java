@@ -4,6 +4,7 @@
 package com.zenithlabs.shapeescape.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -26,6 +27,10 @@ public class WorldController implements Controller {
 	
 	public CameraHelper cameraHelper;
 	
+	//alias to worldRenderer camera
+	private OrthographicCamera camera;
+	
+	public AbstractShape currentShape;
 	//array containing all active shapes 
 	public Array<AbstractShape> shapes;
 	
@@ -52,13 +57,20 @@ public class WorldController implements Controller {
 	public void update(float deltaTime) {
 		worldInput.update(deltaTime);
 		time += 60 * deltaTime;
-		Gdx.app.log(TAG, "" + time);
+		//Gdx.app.log(TAG, "" + time);
 		if (time > 60) {
 			time = 0;
 			score += 1 ;
 			coins += 1 ;
 		}
 		updateObjects(deltaTime);
+	}
+	
+	public void render(SpriteBatch batch) {
+		background.render(batch);
+		for (Arrow arrow: arrows) {
+			arrow.render(batch);
+		}
 	}
 	
 	private void initContainers() {
@@ -68,9 +80,10 @@ public class WorldController implements Controller {
 	private void initTestObjects() {
 		background = new Background();
 		
-		arrows.addAll(new Arrow(), new Arrow(), new Arrow());
+		arrows.addAll(new Arrow());
 		
 		shapes.addAll(arrows);
+		currentShape = arrows.first();
 	}
 	
 	private void updateObjects(float deltaTime) {
@@ -78,11 +91,14 @@ public class WorldController implements Controller {
 			arrow.update(deltaTime);
 		}
 	}
-	public void render(SpriteBatch batch) {
-		background.render(batch);
-		for (Arrow arrow: arrows) {
-			arrow.render(batch);
-		}
+	
+	
+	
+	public void setCamera(OrthographicCamera camera) {
+		this.camera = camera;
 	}
 
+	public OrthographicCamera getCamera() {
+		return this.camera;
+	}
 }

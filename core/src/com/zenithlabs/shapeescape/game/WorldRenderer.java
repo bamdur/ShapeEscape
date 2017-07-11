@@ -48,6 +48,9 @@ public class WorldRenderer implements Renderer {
 		cameraGUI.position.set(0, 0, 0);
 		cameraGUI.setToOrtho(true);
 		cameraGUI.update();
+		
+		//set worldControllers reference (alias) to camera
+		this.worldController.setCamera(this.camera);
 	}
 
 	
