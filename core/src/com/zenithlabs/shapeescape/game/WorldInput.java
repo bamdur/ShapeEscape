@@ -111,8 +111,8 @@ public class WorldInput extends InputAdapter implements InputProcessor {
 			Gdx.app.debug(TAG, "Game world resetted");
 		}
 		// Select next sprite
-		else if (keycode == Keys.SPACE) {
-
+		else if (keycode == Keys.ESCAPE) {
+			worldController.backToMenu();
 		}
 
 		return false;

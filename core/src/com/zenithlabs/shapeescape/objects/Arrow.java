@@ -17,6 +17,7 @@ public class Arrow extends AbstractShape {
 	private void init() {
 		dimension.set(3.47f, 1);
 		arrow = Assets.getInstance().arrow.arrow;
+		//origin.set(position.x + dimension.x / 2, position.y + dimension.y / 2);
 		scale.set(.5f, .5f); 
 		rotation = 90;
 		rectBound = new Rectangle();
@@ -27,7 +28,11 @@ public class Arrow extends AbstractShape {
 	}
 	@Override
 	public void render(SpriteBatch batch) {
-		batch.draw(arrow, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation, true);
+		batch.draw(arrow, position.x, position.y,
+				origin.x, origin.y, dimension.x,
+				dimension.y, scale.x, scale.y, rotation, true);
+		
+
 	}
 
 	@Override

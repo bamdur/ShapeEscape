@@ -22,10 +22,15 @@ public class Assets implements Disposable, AssetErrorListener {
 	private AssetManager assetManager;
 	
 	public AssetArrow arrow;
+	
 	public AssetCircle circle;
 	public AssetSquare square;
 	public AssetRectangle rectangle;
+	public AssetTriangle triangle;
+	public AssetSemiCircle semiCircle;
+	
 	public AssetBackground background;
+	
 	public AssetFonts fonts;
 	
 	
@@ -63,6 +68,8 @@ public class Assets implements Disposable, AssetErrorListener {
 		square = new AssetSquare(atlas);
 		rectangle = new AssetRectangle(atlas);
 		circle = new AssetCircle(atlas);
+		semiCircle = new AssetSemiCircle(atlas);
+		triangle = new AssetTriangle(atlas);
 		
 	}
 	
@@ -115,6 +122,20 @@ public class Assets implements Disposable, AssetErrorListener {
 		public final AtlasRegion rectangle;
 		public AssetRectangle (TextureAtlas atlas) {
 			rectangle = atlas.findRegion("rectangle");
+		}
+	}
+	
+	public class AssetTriangle {
+		public final AtlasRegion triangle;
+		public AssetTriangle (TextureAtlas atlas) {
+			triangle = atlas.findRegion("triangle");
+		}
+	}
+	
+	public class AssetSemiCircle {
+		public final AtlasRegion semiCircle;
+		public AssetSemiCircle (TextureAtlas atlas) {
+			semiCircle = atlas.findRegion("semicircle");
 		}
 	}
 	

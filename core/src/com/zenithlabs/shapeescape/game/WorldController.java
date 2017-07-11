@@ -3,6 +3,7 @@
  */
 package com.zenithlabs.shapeescape.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.zenithlabs.shapeescape.objects.AbstractShape;
 import com.zenithlabs.shapeescape.objects.Arrow;
 import com.zenithlabs.shapeescape.objects.Background;
+import com.zenithlabs.shapeescape.screens.MenuScreen;
 import com.zenithlabs.shapeescape.utils.CameraHelper;
 
 /**
@@ -23,6 +25,8 @@ public class WorldController implements Controller {
 
 	private static final String TAG = WorldController.class.getName();
 
+	private Game game;
+	
 	private WorldInput worldInput;
 	
 	public CameraHelper cameraHelper;
@@ -41,7 +45,8 @@ public class WorldController implements Controller {
 	public int coins = 0;
 	public float time = 0;
 	
-	public WorldController() {
+	public WorldController(Game game) {
+		this.game = game;
 		init();
 	}
 	
@@ -100,5 +105,9 @@ public class WorldController implements Controller {
 
 	public OrthographicCamera getCamera() {
 		return this.camera;
+	}
+	
+	public void backToMenu() {
+		game.setScreen(new MenuScreen(game));
 	}
 }
