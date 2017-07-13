@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.zenithlabs.shapeescape.objects.AbstractShape;
 import com.zenithlabs.shapeescape.objects.Arrow;
 import com.zenithlabs.shapeescape.objects.Background;
+import com.zenithlabs.shapeescape.objects.CircleShape;
 import com.zenithlabs.shapeescape.screens.MenuScreen;
 import com.zenithlabs.shapeescape.utils.CameraHelper;
 
@@ -38,7 +39,7 @@ public class WorldController implements Controller {
 	//array containing all active shapes 
 	public Array<AbstractShape> shapes;
 	
-	
+	public CircleShape circle;
 	public Background background;
 	public Array<Arrow> arrows;
 	
@@ -77,6 +78,7 @@ public class WorldController implements Controller {
 		for (Arrow arrow: arrows) {
 			arrow.render(batch);
 		}
+		circle.render(batch);
 	}
 	
 	private void initContainers() {
@@ -85,17 +87,24 @@ public class WorldController implements Controller {
 	}
 	private void initTestObjects() {
 		background = new Background();
+		circle = new CircleShape();
+		
+		circle.origin.set(circle.position.x + circle.dimension.x /2,
+				circle.position.y + circle.dimension.y /2);
 		
 		arrows.addAll(new Arrow());
 		
 		shapes.addAll(arrows);
-		currentShape = arrows.first();
+		shapes.add(circle);
+		//currentShape = arrows.first();
+		currentShape = circle;
 	}
 	
 	private void updateObjects(float deltaTime) {
 		for (Arrow arrow: arrows) {
 			arrow.update(deltaTime);
 		}
+		circle.update(deltaTime);
 	}
 	
 	

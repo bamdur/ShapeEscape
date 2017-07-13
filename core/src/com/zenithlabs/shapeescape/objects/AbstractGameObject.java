@@ -29,7 +29,16 @@ public abstract class AbstractGameObject {
 		
 	}
 
-	public void update(float deltaTime) {}
+	public void update(float deltaTime) {
+		updateOrigin();
+	}
 	
 	public abstract void render (SpriteBatch batch);
+	
+	public void updateOrigin() {
+		this.origin.set(this.position.x + 
+				(this.scale.x * (this.dimension.x /2)),
+				this.position.y 
+				+ (this.scale.y * (this.dimension.y /2)));
+	}
 }

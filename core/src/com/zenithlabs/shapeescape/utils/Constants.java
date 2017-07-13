@@ -11,8 +11,13 @@ public class Constants {
 	public static final float VIEWPORT_HEIGHT = 10.0f;
 	//Game Objects texture atlas
 	public static final String TEXTURE_ATLAS_OBJECTS = "objects/gameObjects.pack";
-	//GUI Width
-
+	
+	
+	//Menu Atlas
 	public static final String TEXTURE_ATLAS_MENU = "menu/menu.pack";
+	
+	public static final String SKIN_LIBGDX_UI = "menu/uiskin.json";
+	
+	public static final String TEXTURE_ATLAS_LIBGDX_UI = "menu/uiskin.atlas";
 	
 }

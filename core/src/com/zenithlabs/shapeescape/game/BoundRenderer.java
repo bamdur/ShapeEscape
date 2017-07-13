@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Shape2D;
 import com.badlogic.gdx.utils.Disposable;
 import com.zenithlabs.shapeescape.objects.AbstractShape;
 
@@ -16,6 +18,8 @@ public class BoundRenderer implements Disposable {
 
 	private ShapeRenderer shapeRenderer;
 	private WorldController worldController;
+	
+	private Shape2D bound;
 
 	public BoundRenderer(WorldController controller) {
 		this.worldController = controller;
@@ -29,10 +33,13 @@ public class BoundRenderer implements Disposable {
 	private void renderBounds() {
 		for (AbstractShape object: worldController.shapes) {
 			if (object.bound.getClass().equals(Rectangle.class)) {
-				Rectangle bound =  (Rectangle) object.bound;
-				shapeRenderer.rect(bound.x, bound.y, bound.width, bound.height);
-
+				Rectangle rectBound =  (Rectangle) object.bound;
+				shapeRenderer.rect(rectBound.x, rectBound.y, rectBound.width, rectBound.height);
+			} else if (object.bound.getClass().equals(Circle.class)) {
+				Circle circleBound = (Circle) object.bound;
+				shapeRenderer.circle(circleBound.x, circleBound.y, circleBound.radius);
 			}
+		
 		}
 	}
 	
