@@ -16,8 +16,12 @@ public class Constants {
 	//Menu Atlas
 	public static final String TEXTURE_ATLAS_MENU = "menu/menu.pack";
 	
+	public static final String SKIN_MENU_UI = "menu/menu-ui.json";
+	
 	public static final String SKIN_LIBGDX_UI = "menu/uiskin.json";
 	
 	public static final String TEXTURE_ATLAS_LIBGDX_UI = "menu/uiskin.atlas";
+
+	public static final String PREFERENCES = "";
 	
 }

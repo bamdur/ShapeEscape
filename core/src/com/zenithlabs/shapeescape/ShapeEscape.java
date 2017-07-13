@@ -15,6 +15,9 @@ import com.zenithlabs.shapeescape.game.WorldRenderer;
 import com.zenithlabs.shapeescape.screens.MenuScreen;
 
 public class ShapeEscape extends Game {
+	
+	private int score;
+	private int highScore;
 
 	@Override
 	public void create () {
@@ -24,6 +27,23 @@ public class ShapeEscape extends Game {
 		Assets.getInstance().init(new AssetManager());
 		
 		setScreen(new MenuScreen(this));
+	}
+	
+	
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getHighScore() {
+		return highScore;
+	}
+
+	public void setHighScore(int highScore) {
+		this.highScore = highScore;
 	}
 
 }
