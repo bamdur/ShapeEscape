@@ -1,0 +1,34 @@
+
+menu.png
+size: 1024,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+PlayButton
+  rotate: false
+  xy: 600, 384
+  size: 200, 100
+  orig: 200, 100
+  offset: 0, 0
+  index: -1
+ShopButton
+  rotate: false
+  xy: 2, 2
+  size: 200, 100
+  orig: 200, 100
+  offset: 0, 0
+  index: -1
+background
+  rotate: false
+  xy: 2, 104
+  size: 596, 380
+  orig: 596, 380
+  offset: 0, 0
+  index: -1
+pause
+  rotate: false
+  xy: 204, 52
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1

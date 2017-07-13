@@ -1,0 +1,9 @@
+{
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	play: { down: play, up: play},
+	shop: { down: shop, up: shop{
+},
+com.badlogic.gdx.scenes.scene2d.ui.Image: {
+
+},
+}

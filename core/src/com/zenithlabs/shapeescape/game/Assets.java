@@ -22,7 +22,6 @@ public class Assets implements Disposable, AssetErrorListener {
 	private AssetManager assetManager;
 	
 	public AssetArrow arrow;
-	
 	public AssetCircle circle;
 	public AssetSquare square;
 	public AssetRectangle rectangle;
@@ -30,6 +29,8 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetSemiCircle semiCircle;
 	
 	public AssetBackground background;
+	public AssetPlayButton playButton;
+	public AssetShopButton shopButton;
 	
 	public AssetFonts fonts;
 	
@@ -45,6 +46,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		this.assetManager = assetManager;
 		assetManager.setErrorListener(this);
 		assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
+		assetManager.load(Constants.TEXTURE_ATLAS_MENU, TextureAtlas.class);
 		//start loading assets and wait until finished
 		assetManager.finishLoading();
 		
@@ -53,23 +55,28 @@ public class Assets implements Disposable, AssetErrorListener {
 			Gdx.app.debug(TAG, "asset: " + a);
 		}
 		
-		TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_OBJECTS);
+		TextureAtlas gameAtlas = assetManager.get(Constants.TEXTURE_ATLAS_OBJECTS);
+		TextureAtlas menuAtlas = assetManager.get(Constants.TEXTURE_ATLAS_MENU);
+
 		
 		//enable texture filtering for pixel smoothing (performance condieration?)
-		for (Texture t : atlas.getTextures()) {
+		for (Texture t : gameAtlas.getTextures()) {
 			t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		}
 		//create game resources
 		fonts = new AssetFonts();
 
 		
-		background = new AssetBackground(atlas);
-		arrow = new AssetArrow(atlas);
-		square = new AssetSquare(atlas);
-		rectangle = new AssetRectangle(atlas);
-		circle = new AssetCircle(atlas);
-		semiCircle = new AssetSemiCircle(atlas);
-		triangle = new AssetTriangle(atlas);
+		background = new AssetBackground(gameAtlas);
+		arrow = new AssetArrow(gameAtlas);
+		square = new AssetSquare(gameAtlas);
+		rectangle = new AssetRectangle(gameAtlas);
+		circle = new AssetCircle(gameAtlas);
+		semiCircle = new AssetSemiCircle(gameAtlas);
+		triangle = new AssetTriangle(gameAtlas);
+		
+		playButton = new AssetPlayButton(menuAtlas);
+		shopButton = new AssetShopButton(menuAtlas);
 		
 	}
 	
@@ -89,6 +96,8 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	/*
 	 * Subclasses for individual assets.
+	 * 
+	 * Game Assets
 	 */
 	public class AssetArrow {
 		public final AtlasRegion arrow;
@@ -139,7 +148,27 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 	}
 	
+	/*
+	 * Menu Assets
+	 */
 	
+	public class AssetPlayButton {
+		public final AtlasRegion playButton;
+		public AssetPlayButton(TextureAtlas atlas) {
+			playButton = atlas.findRegion("playButton");
+		}
+	}
+	
+	public class AssetShopButton {
+		public final AtlasRegion shopButton;
+		public AssetShopButton(TextureAtlas atlas) {
+			shopButton = atlas.findRegion("shopButton");
+		}
+	}
+	
+	/*
+	 * Font Assets
+	 */
 	public class AssetFonts {
 		public final BitmapFont small;
 		public final BitmapFont medium;

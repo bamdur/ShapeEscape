@@ -38,6 +38,7 @@ public class WorldController implements Controller {
 	//array containing all active shapes 
 	public Array<AbstractShape> shapes;
 	
+	
 	public Background background;
 	public Array<Arrow> arrows;
 	

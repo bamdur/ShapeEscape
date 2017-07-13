@@ -12,5 +12,7 @@ public class Constants {
 	//Game Objects texture atlas
 	public static final String TEXTURE_ATLAS_OBJECTS = "objects/gameObjects.pack";
 	//GUI Width
+
+	public static final String TEXTURE_ATLAS_MENU = "menu/menu.pack";
 	
 }
