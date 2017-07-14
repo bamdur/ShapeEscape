@@ -48,7 +48,7 @@ public class BoundRenderer implements Disposable {
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		
 		shapeRenderer.begin(ShapeType.Line);
-		shapeRenderer.setColor(Color.RED);
+		shapeRenderer.setColor(Color.VIOLET);
 		
 		renderBounds();
 		

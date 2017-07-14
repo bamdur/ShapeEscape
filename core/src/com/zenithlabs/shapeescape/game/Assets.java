@@ -46,6 +46,8 @@ public class Assets implements Disposable, AssetErrorListener {
 		this.assetManager = assetManager;
 		assetManager.setErrorListener(this);
 		assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
+		
+		//MAY BE INVALID
 		assetManager.load(Constants.TEXTURE_ATLAS_MENU, TextureAtlas.class);
 		//start loading assets and wait until finished
 		assetManager.finishLoading();

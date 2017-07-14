@@ -9,6 +9,7 @@ import com.zenithlabs.shapeescape.game.Assets;
 import com.zenithlabs.shapeescape.objects.Arrow;
 
 public class MenuArrowRain {
+	private static final String TAG = MenuArrowRain.class.getName();
 	
 	private Array<Arrow> arrows;
 	private long timeSinceLastArrow = 0;
@@ -41,7 +42,7 @@ public class MenuArrowRain {
 
 	public void update(float deltaTime) {
 		timeSinceLastArrow = TimeUtils.millis() - currentTime;
-		Gdx.app.log("timeSinceLastArrow", ": " + timeSinceLastArrow);
+		//Gdx.app.log("timeSinceLastArrow", ": " + timeSinceLastArrow);
 		if (timeSinceLastArrow > timeInterval) {
 			generateArrow();
 			currentTime = TimeUtils.millis();

@@ -2,6 +2,7 @@ package com.zenithlabs.shapeescape.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,8 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.zenithlabs.shapeescape.game.Assets;
+import com.badlogic.gdx.utils.Array;
 import com.zenithlabs.shapeescape.menu.MenuScreenRenderer;
 import com.zenithlabs.shapeescape.utils.Constants;
 import com.zenithlabs.shapeescape.utils.GamePreferences;
@@ -29,7 +29,7 @@ public class MenuScreen extends AbstractGameScreen {
 	private Button btnMenuPlay;
 	private Button btnMenuShop;
 	
-	private boolean debugMode = false;
+	private boolean renderDebug = false;
 	
 	
 	private MenuScreenRenderer renderer;
@@ -60,17 +60,22 @@ public class MenuScreen extends AbstractGameScreen {
 				, new TextureAtlas(Constants.TEXTURE_ATLAS_MENU));
 		
 		//build layers
+		Array<Table> layers = new Array<Table>();
 		Table layerBackground = buildBackgroundLayer();
 		Table layerObjects = buildObjectsLayer();
 		Table layerControls = buildControlsLayer();
 		
+		layers.addAll(layerBackground, layerObjects, layerControls);
+		for (Table layer: layers) {
+			if (renderDebug) {
+				layer.debug();
+			}
+		}
 		//assemble stage
 		stage.clear();
 		Stack stack = new Stack();
 		stack.setFillParent(true);
-		
-		stack.setDebug(debugMode, true);
-		
+				
 		stage.addActor(stack);
 		stack.setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 		stack.add(layerBackground);
@@ -81,6 +86,7 @@ public class MenuScreen extends AbstractGameScreen {
 	
 	private Table buildBackgroundLayer() {
 		Table layer = new Table();
+		
 		layer.bottom();
 		imgBackground = new Image(skinShapeEscape, "background");
 		imgBackground.setFillParent(true);
@@ -91,7 +97,9 @@ public class MenuScreen extends AbstractGameScreen {
 	
 	private Table buildObjectsLayer() {
 		Table layer = new Table();
+		layer.top().padTop(60);
 		imgGameName = new Image(skinShapeEscape, "ShapeEscape");
+		imgGameName.setColor(Color.WHITE);
 		layer.add(imgGameName);
 		return layer;
 	}
@@ -99,7 +107,6 @@ public class MenuScreen extends AbstractGameScreen {
 	private Table buildControlsLayer() {
 		Table layer = new Table();
 		layer.center().bottom().padBottom(60);
-
 		
 		//Play Button
 		btnMenuPlay = new Button(skinShapeEscape, "PlayButton");
@@ -131,10 +138,11 @@ public class MenuScreen extends AbstractGameScreen {
 	
 	private void onPlayClicked() {
 		game.setScreen(new GameScreen(game));
+		renderer.dispose();
 	}
 	
 	private void onShopClicked() {
-		
+		game.setScreen(new ShopScreen(game, renderer));
 	}
 	
 	private void loadSettings() {
@@ -148,7 +156,6 @@ public class MenuScreen extends AbstractGameScreen {
 	}
 	@Override
 	public void resize(int width, int height) {
-		//stage.setViewport(new Viewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, false));
 		renderer.resize(width, height);
 	}
 
@@ -162,12 +169,11 @@ public class MenuScreen extends AbstractGameScreen {
 	@Override
 	public void hide() {
 		stage.dispose();
-		renderer.dispose();
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

@@ -52,7 +52,18 @@ public class WorldInput extends InputAdapter implements InputProcessor {
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
+		Vector2 shapePos = worldController.currentShape.position;
+		Vector2 touchedPos = new Vector2(x, y);
 		worldController.getCamera().unproject(tp.set(x, y, 0));
+		/*
+		while (shapePos.epsilonEquals(touchedPos, .002f)) {
+			if (y > shapePos.y ) {
+				shapePos.set()
+			} else {
+				
+			}
+
+		} */
 		worldController.currentShape.position.set(tp.x, tp.y);
 
 		

@@ -14,7 +14,7 @@ public class CircleShape extends AbstractShape {
 	}
 	
 	private void init() {
-		dimension.set(1, 1);
+		dimension.set(.75f, .75f);
 		circle = Assets.getInstance().circle.circle;
 		//scale.set(.5f, .5f);
 		circBound = new Circle();
