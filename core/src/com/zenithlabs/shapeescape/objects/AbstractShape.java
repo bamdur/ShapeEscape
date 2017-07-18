@@ -13,6 +13,7 @@ public abstract class AbstractShape extends AbstractGameObject {
 	
 	@Override
 	public void update(float deltaTime) {
+		super.update(deltaTime);
 		this.updateBound();
 	}
 }

@@ -59,4 +59,8 @@ public class Arrow extends AbstractShape {
 	public void setAlive(boolean isAlive) {
 		this.alive = isAlive;
 	}
+	
+	public boolean isAlive() {
+		return alive;
+	}
 }

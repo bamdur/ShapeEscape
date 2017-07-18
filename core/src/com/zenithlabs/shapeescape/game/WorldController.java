@@ -10,12 +10,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.zenithlabs.shapeescape.objects.AbstractShape;
 import com.zenithlabs.shapeescape.objects.Arrow;
 import com.zenithlabs.shapeescape.objects.Background;
 import com.zenithlabs.shapeescape.objects.CircleShape;
+import com.zenithlabs.shapeescape.objects.RectangleShape;
 import com.zenithlabs.shapeescape.screens.MenuScreen;
 import com.zenithlabs.shapeescape.utils.CameraHelper;
 
@@ -40,18 +43,24 @@ public class WorldController implements Controller {
 	//array containing all active shapes 
 	public Array<AbstractShape> shapes;
 	
+	public RectangleShape rectangle;
 	public CircleShape circle;
 	public Background background;
-	public Array<Arrow> arrows;
+	public Array<Arrow> aliveArrows;
+	public Array<Arrow> deadArrows;
 	
 	//Time based fields
-	private long timeSinceLastArrow = 0;
-	private long currentTime = 0;
-	private float timeInterval = MathUtils.random(400, 700);
+	private long timeSinceLastArrow;
+	private long currentTime;
+	private float timeInterval;
 	
 	public int score = 0;
 	public int coins = 0;
 	public float time = 0;
+	
+	private int moveSpeed;
+
+	public boolean gameOver;
 	
 	public WorldController(Game game) {
 		this.game = game;
@@ -60,6 +69,12 @@ public class WorldController implements Controller {
 	
 	//Public access so worldInput (input controller) can access it to reset the game
 	public void init () {
+		gameOver = false;
+		timeSinceLastArrow = 0;
+		currentTime = 0;
+		timeInterval = MathUtils.random(400, 700);
+		moveSpeed = 8;
+		
 		cameraHelper = new CameraHelper();
 		worldInput = new WorldInput(this, cameraHelper);
 		currentTime = TimeUtils.millis();
@@ -83,28 +98,31 @@ public class WorldController implements Controller {
 	
 	public void render(SpriteBatch batch) {
 		background.render(batch);
-		for (Arrow arrow: arrows) {
+		for (Arrow arrow: aliveArrows) {
 			arrow.render(batch);
 		}
-		circle.render(batch);
+		//circle.render(batch);
+		rectangle.render(batch);
 	}
 	
 	private void initContainers() {
-		arrows = new Array<Arrow>();
+		deadArrows = new Array<Arrow>();
+		aliveArrows = new Array<Arrow>();
 		shapes = new Array<AbstractShape>();
 	}
 	private void initObjects() {
 		background = new Background();
 		circle = new CircleShape();
-
-		shapes.add(circle);
+		rectangle = new RectangleShape();
+		shapes.add(rectangle);
 		//currentShape = arrows.first();
-		currentShape = circle;
+		currentShape = rectangle;
 	}
 	
 	private void updateObjects(float deltaTime) {
 		updateArrows(deltaTime);
 		circle.update(deltaTime);
+		rectangle.update(deltaTime);
 	}
 	
 	private void updateArrows(float deltaTime) {
@@ -116,21 +134,45 @@ public class WorldController implements Controller {
 			timeInterval = MathUtils.random(400, 700);
 		}
 
-		for (Arrow arrow: arrows) {
-			arrow.position.set(arrow.position.x, arrow.position.y - deltaTime * 8);
+		for (Arrow arrow: aliveArrows) {
+			arrow.position.set(arrow.position.x, arrow.position.y - deltaTime * moveSpeed);
 			if (arrow.position.y < -7) {
-				arrows.removeValue(arrow, false);
+				deadArrows.add(arrow);
+				aliveArrows.removeValue(arrow, true);
 				arrow.setAlive(false);
 			}
 			arrow.update(deltaTime);
-
+		}
+		if (!gameOver){
+			checkCollisionArrowShape();
 		}
 	
 	}
+	
+	private void checkCollisionArrowShape() {
+		for (Arrow arrow: aliveArrows) {
+		    Rectangle arrowBound = (Rectangle) arrow.bound;
+		    Vector2 arrowPos = new Vector2();
+		    arrowBound.getPosition(arrowPos);
+		    arrowPos.add(arrowBound.width/2, 0);
+			if (currentShape.bound.contains(arrowPos)) {
+				Gdx.app.log(TAG, "Collision");
+				moveSpeed = 8;
+				gameOver = true;
+			}
+		}
+	}
+	
 	private void generateArrow() {
-		Arrow arrow = new Arrow();
+		Arrow arrow;
+		if (deadArrows.size > 0) {
+			arrow = deadArrows.first();
+			deadArrows.removeValue(arrow, true);
+		} else {
+			arrow = new Arrow();
+		}
+		aliveArrows.add(arrow);
 		arrow.position.set(MathUtils.random(-2.8f, 3.2f) , 5);
-		arrows.add(arrow);
 		shapes.add(arrow);
 	}
 	

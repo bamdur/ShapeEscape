@@ -4,30 +4,37 @@ size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+Impaled
+  rotate: false
+  xy: 602, 386
+  size: 300, 100
+  orig: 300, 100
+  offset: 0, 0
+  index: -1
 PlayButton
   rotate: false
-  xy: 600, 282
+  xy: 602, 283
   size: 200, 100
   orig: 200, 100
   offset: 0, 0
   index: -1
 ShapeEscape
   rotate: false
-  xy: 2, 2
+  xy: 3, 3
   size: 400, 100
   orig: 400, 100
   offset: 0, 0
   index: -1
 ShopButton
   rotate: false
-  xy: 600, 384
+  xy: 602, 180
   size: 200, 100
   orig: 200, 100
   offset: 0, 0
   index: -1
 background
   rotate: false
-  xy: 2, 104
+  xy: 3, 106
   size: 596, 380
   orig: 596, 380
   offset: 0, 0

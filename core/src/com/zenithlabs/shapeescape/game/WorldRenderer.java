@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Disposable;
 import com.zenithlabs.shapeescape.utils.Constants;
 
@@ -28,6 +29,9 @@ public class WorldRenderer implements Renderer {
 	private WorldController worldController;
 	
 	private BoundRenderer boundRenderer;
+	
+
+	
 	
 	private static final String TAG = WorldRenderer.class.getName();
 	
