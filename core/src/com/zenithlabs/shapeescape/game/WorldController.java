@@ -73,7 +73,7 @@ public class WorldController implements Controller {
 		timeSinceLastArrow = 0;
 		currentTime = 0;
 		timeInterval = MathUtils.random(400, 700);
-		moveSpeed = 8;
+		moveSpeed = 0;
 		
 		cameraHelper = new CameraHelper();
 		worldInput = new WorldInput(this, cameraHelper);
@@ -152,10 +152,10 @@ public class WorldController implements Controller {
 	private void checkCollisionArrowShape() {
 		for (Arrow arrow: aliveArrows) {
 		    Rectangle arrowBound = (Rectangle) arrow.bound;
-		    Vector2 arrowPos = new Vector2();
-		    arrowBound.getPosition(arrowPos);
-		    arrowPos.add(arrowBound.width/2, 0);
-			if (currentShape.bound.contains(arrowPos)) {
+		    Rectangle shapeBound = (Rectangle) currentShape.bound;
+		    
+
+			if (arrowBound.overlaps(shapeBound)) {
 				Gdx.app.log(TAG, "Collision");
 				moveSpeed = 8;
 				gameOver = true;
@@ -165,9 +165,10 @@ public class WorldController implements Controller {
 	
 	private void generateArrow() {
 		Arrow arrow;
-		if (deadArrows.size > 0) {
+		if (deadArrows.size > 1) {
 			arrow = deadArrows.first();
 			deadArrows.removeValue(arrow, true);
+			arrow.isAlive();
 		} else {
 			arrow = new Arrow();
 		}

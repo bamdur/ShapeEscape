@@ -49,11 +49,7 @@ public class Arrow extends AbstractShape {
 	}
 	
 	public void update(float deltaTime) {
-		if (alive) {
-			updateBound();
-		} else {
-			rectBound = null;
-		}
+		updateBound();
 	}
 
 	public void setAlive(boolean isAlive) {

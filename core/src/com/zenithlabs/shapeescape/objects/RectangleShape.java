@@ -17,6 +17,8 @@ public class RectangleShape extends AbstractShape {
 	}
 	
 	private void init() {
+		speed = 4;
+		
 		dimension.set(1.618f, 1f);
 		rectangle = Assets.getInstance().rectangle.rectangle;
 		rectBound = new Rectangle();

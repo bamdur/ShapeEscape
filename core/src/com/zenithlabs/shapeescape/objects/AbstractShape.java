@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class AbstractShape extends AbstractGameObject {
 
-	public Vector2 velocity;
+	public float speed;
 	
 	public Shape2D bound;
 	

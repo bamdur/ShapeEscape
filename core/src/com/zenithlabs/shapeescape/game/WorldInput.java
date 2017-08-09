@@ -36,6 +36,9 @@ public class WorldInput extends InputAdapter implements InputProcessor {
 	public void update(float deltaTime) {
 		handleDebugInput(deltaTime);
 		cameraHelper.update(deltaTime);
+		
+		moveToTouch(tp.x, tp.y, deltaTime);
+
 	}
 
 	
@@ -52,19 +55,8 @@ public class WorldInput extends InputAdapter implements InputProcessor {
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
-		Vector2 shapePos = worldController.currentShape.position;
-		Vector2 touchedPos = new Vector2(x, y);
 		worldController.getCamera().unproject(tp.set(x, y, 0));
-		/*
-		while (shapePos.epsilonEquals(touchedPos, .002f)) {
-			if (y > shapePos.y ) {
-				shapePos.set()
-			} else {
-				
-			}
-
-		} */
-		worldController.currentShape.position.set(tp.x, tp.y);
+	
 
 		
 		return true;
@@ -75,6 +67,53 @@ public class WorldInput extends InputAdapter implements InputProcessor {
 		return false;
 	}
 
+	
+	private void moveToTouch(float x, float y, float deltaTime) {
+		AbstractShape shape = worldController.currentShape;
+		Vector2 shapePos = worldController.currentShape.position;
+		Vector2 finalPos = new Vector2(x - shape.scaledDimension.x / 2, y - shape.scaledDimension.y /2);
+		float xDist = Math.abs(finalPos.x - shapePos.x);
+		float yDist = Math.abs(finalPos.y - shapePos.y);
+		float xSpeedBuffer = 1;
+		float ySpeedBuffer = 1;
+		if (!shapePos.epsilonEquals(finalPos, .15f)) {
+			
+			if (xDist > yDist) {
+				xSpeedBuffer = xDist/yDist; 
+			} else if (yDist > xDist) {
+				ySpeedBuffer = yDist/xDist;
+			}
+			
+			float xIncrement = deltaTime * shape.speed * xSpeedBuffer;
+			float yIncrement = deltaTime * shape.speed * ySpeedBuffer;
+			
+			if (shapePos.x < finalPos.x) {
+				if (shapePos.y < finalPos.y) {
+					//Underneath to the left
+					shape.position.add(xIncrement, yIncrement);
+				} else if (shapePos.y > finalPos.y){
+					//Above to the left
+					shape.position.add(xIncrement, -yIncrement);
+				}
+			} else if (shapePos.x > finalPos.x){
+				if (shapePos.y < finalPos.y) {
+					//Underneath to the right
+					shape.position.add(-xIncrement, yIncrement);
+
+				} else if (shapePos.y > finalPos.y){
+					//above to the right
+					shape.position.add(-xIncrement, -yIncrement);
+
+				}
+			}
+		}
+		
+		//shape.position.set(x - shape.scaledDimension.x / 2, y - shape.scaledDimension.y /2);
+
+	}
+	
+	
+	
 	private void handleDebugInput(float deltaTime) {
 		if (Gdx.app.getType() != ApplicationType.Desktop)
 			return;
