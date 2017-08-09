@@ -42,8 +42,9 @@ public class Arrow extends AbstractShape {
 	public void updateBound() {
 		//90 degree rotation rectbound
 		rectBound.set(this.position.x - (this.dimension.y * this.scale.y),
-				this.position.y, this.dimension.y * this.scale.y, 
-				this.dimension.x * this.scale.x);
+				this.position.y, 
+				this.dimension.y * this.scale.y, 
+				this.dimension.x * this.scale.x / 4);
 		//dont need this cause alias
 		 //bound = rectBound;
 	}

@@ -21,6 +21,10 @@ import com.zenithlabs.shapeescape.objects.CircleShape;
 import com.zenithlabs.shapeescape.objects.RectangleShape;
 import com.zenithlabs.shapeescape.screens.MenuScreen;
 import com.zenithlabs.shapeescape.utils.CameraHelper;
+import com.zenithlabs.shapeescape.utils.ObjectAccessor;
+
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
 
 /**
  * @author Brandon Amdur
@@ -31,6 +35,8 @@ public class WorldController implements Controller {
 	private static final String TAG = WorldController.class.getName();
 
 	private Game game;
+	
+	public TweenManager tweenManager;
 	
 	private WorldInput worldInput;
 	
@@ -49,6 +55,8 @@ public class WorldController implements Controller {
 	public Array<Arrow> aliveArrows;
 	public Array<Arrow> deadArrows;
 	
+	public Array<Arrow> specialArrows; //for remaining arrow, may want to chagne this
+	
 	//Time based fields
 	private long timeSinceLastArrow;
 	private long currentTime;
@@ -58,7 +66,7 @@ public class WorldController implements Controller {
 	public int coins = 0;
 	public float time = 0;
 	
-	private int moveSpeed;
+	private int arrowFallSpeed;
 
 	public boolean gameOver;
 	
@@ -73,12 +81,13 @@ public class WorldController implements Controller {
 		timeSinceLastArrow = 0;
 		currentTime = 0;
 		timeInterval = MathUtils.random(400, 700);
-		moveSpeed = 0;
+		arrowFallSpeed = 3;
 		
 		cameraHelper = new CameraHelper();
 		worldInput = new WorldInput(this, cameraHelper);
 		currentTime = TimeUtils.millis();
 
+		tweenManager = new TweenManager();
 		initContainers();
 		initObjects();
 	}
@@ -101,6 +110,9 @@ public class WorldController implements Controller {
 		for (Arrow arrow: aliveArrows) {
 			arrow.render(batch);
 		}
+		for (Arrow arrow: specialArrows) {
+			arrow.render(batch);
+		}
 		//circle.render(batch);
 		rectangle.render(batch);
 	}
@@ -108,14 +120,15 @@ public class WorldController implements Controller {
 	private void initContainers() {
 		deadArrows = new Array<Arrow>();
 		aliveArrows = new Array<Arrow>();
+		specialArrows = new Array<Arrow>();
 		shapes = new Array<AbstractShape>();
 	}
 	private void initObjects() {
 		background = new Background();
 		circle = new CircleShape();
 		rectangle = new RectangleShape();
+		
 		shapes.add(rectangle);
-		//currentShape = arrows.first();
 		currentShape = rectangle;
 	}
 	
@@ -135,7 +148,7 @@ public class WorldController implements Controller {
 		}
 
 		for (Arrow arrow: aliveArrows) {
-			arrow.position.set(arrow.position.x, arrow.position.y - deltaTime * moveSpeed);
+			arrow.position.set(arrow.position.x, arrow.position.y - deltaTime * arrowFallSpeed);
 			if (arrow.position.y < -7) {
 				deadArrows.add(arrow);
 				aliveArrows.removeValue(arrow, true);
@@ -143,9 +156,12 @@ public class WorldController implements Controller {
 			}
 			arrow.update(deltaTime);
 		}
-		if (!gameOver){
-			checkCollisionArrowShape();
-		}
+		
+		checkCollisionArrowShape();
+			if (specialArrows.size > 30) {
+				specialArrows.removeValue(specialArrows.first(), true);
+			}
+		
 	
 	}
 	
@@ -157,7 +173,11 @@ public class WorldController implements Controller {
 
 			if (arrowBound.overlaps(shapeBound)) {
 				Gdx.app.log(TAG, "Collision");
-				moveSpeed = 8;
+				specialArrows.add(arrow);
+				aliveArrows.removeValue(arrow, true);
+				tweenManager.killAll();
+				//arrowFallSpeed = 8;
+				
 				gameOver = true;
 			}
 		}

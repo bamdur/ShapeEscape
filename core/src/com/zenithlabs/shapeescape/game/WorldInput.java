@@ -8,6 +8,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.zenithlabs.shapeescape.objects.AbstractShape;
 import com.zenithlabs.shapeescape.utils.CameraHelper;
+import com.zenithlabs.shapeescape.utils.ObjectAccessor;
+
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Keys;
 
@@ -17,6 +22,8 @@ public class WorldInput extends InputAdapter implements InputProcessor {
 
 	private WorldController worldController;
 	private CameraHelper cameraHelper;
+	
+	private static float SPEED_FACTOR = .4f;
 
 	// Touch Point vector for camera unprojection for mouse/touch
 	Vector3 tp;
@@ -37,7 +44,7 @@ public class WorldInput extends InputAdapter implements InputProcessor {
 		handleDebugInput(deltaTime);
 		cameraHelper.update(deltaTime);
 		
-		moveToTouch(tp.x, tp.y, deltaTime);
+		worldController.tweenManager.update(deltaTime);
 
 	}
 
@@ -56,7 +63,7 @@ public class WorldInput extends InputAdapter implements InputProcessor {
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
 		worldController.getCamera().unproject(tp.set(x, y, 0));
-	
+		moveToTouch(tp.x, tp.y);
 
 		
 		return true;
@@ -68,48 +75,16 @@ public class WorldInput extends InputAdapter implements InputProcessor {
 	}
 
 	
-	private void moveToTouch(float x, float y, float deltaTime) {
+	private void moveToTouch(float x, float y) {
 		AbstractShape shape = worldController.currentShape;
 		Vector2 shapePos = worldController.currentShape.position;
 		Vector2 finalPos = new Vector2(x - shape.scaledDimension.x / 2, y - shape.scaledDimension.y /2);
-		float xDist = Math.abs(finalPos.x - shapePos.x);
-		float yDist = Math.abs(finalPos.y - shapePos.y);
-		float xSpeedBuffer = 1;
-		float ySpeedBuffer = 1;
-		if (!shapePos.epsilonEquals(finalPos, .15f)) {
-			
-			if (xDist > yDist) {
-				xSpeedBuffer = xDist/yDist; 
-			} else if (yDist > xDist) {
-				ySpeedBuffer = yDist/xDist;
-			}
-			
-			float xIncrement = deltaTime * shape.speed * xSpeedBuffer;
-			float yIncrement = deltaTime * shape.speed * ySpeedBuffer;
-			
-			if (shapePos.x < finalPos.x) {
-				if (shapePos.y < finalPos.y) {
-					//Underneath to the left
-					shape.position.add(xIncrement, yIncrement);
-				} else if (shapePos.y > finalPos.y){
-					//Above to the left
-					shape.position.add(xIncrement, -yIncrement);
-				}
-			} else if (shapePos.x > finalPos.x){
-				if (shapePos.y < finalPos.y) {
-					//Underneath to the right
-					shape.position.add(-xIncrement, yIncrement);
-
-				} else if (shapePos.y > finalPos.y){
-					//above to the right
-					shape.position.add(-xIncrement, -yIncrement);
-
-				}
-			}
-		}
 		
-		//shape.position.set(x - shape.scaledDimension.x / 2, y - shape.scaledDimension.y /2);
-
+		float length = (float) Math.hypot(Math.abs(finalPos.x - shapePos.x), Math.abs(finalPos.y - shapePos.y));
+		Gdx.app.log(TAG, length + "");
+		
+		Tween.to(shape, ObjectAccessor.POSITION_XY, shape.speed * length * SPEED_FACTOR).
+		target(finalPos.x, finalPos.y).ease(TweenEquations.easeOutQuad).start(worldController.tweenManager);
 	}
 	
 	

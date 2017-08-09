@@ -12,7 +12,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.zenithlabs.shapeescape.game.Assets;
 import com.zenithlabs.shapeescape.game.WorldController;
 import com.zenithlabs.shapeescape.game.WorldRenderer;
+import com.zenithlabs.shapeescape.objects.AbstractGameObject;
 import com.zenithlabs.shapeescape.screens.MenuScreen;
+import com.zenithlabs.shapeescape.utils.ObjectAccessor;
+
+import aurelienribon.tweenengine.Tween;
 
 public class ShapeEscape extends Game {
 	
@@ -25,7 +29,7 @@ public class ShapeEscape extends Game {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		//Load assets
 		Assets.getInstance().init(new AssetManager());
-		
+		Tween.registerAccessor(AbstractGameObject.class, new ObjectAccessor());
 		setScreen(new MenuScreen(this));
 	}
 	
